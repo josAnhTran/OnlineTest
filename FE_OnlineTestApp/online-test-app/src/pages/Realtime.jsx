@@ -25,16 +25,13 @@ export default function Realtime() {
   React.useEffect(() => {
     // SOCKET: LISTEN
     socket.on('server-message', (data) => {
-      const tmp =messages;
-      tmp.push(data);
-      setMessages([...tmp]);
       console.log('Message from server: ', data)
-      // if (data.type === 'chat') {
-      //   const tmp = messages;
-      //   tmp.push(data);
+      if (data.type === 'chat') {
+        const tmp = messages;
+        tmp.push(data);
 
-      //   setMessages([...tmp]);
-      // }
+        setMessages([...tmp]);
+      }
     });
   }, []);
 
@@ -60,8 +57,8 @@ export default function Realtime() {
             onFinish={(values) => {
               // SUBMIT
               setUsername(values.name);
-              socket.emit('client-message', values)
-              // socket.emit('client-message', { ...values, type: 'chat' });
+              // socket.emit('client-message', values)
+              socket.emit('client-message', { ...values, type: 'chat' });
             }}
             onFinishFailed={(error) => {
               console.error({status: false, content: error});
